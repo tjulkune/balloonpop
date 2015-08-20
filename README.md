@@ -1,4 +1,4 @@
-# balloonpop
+# Balloonpop
 Platform: Android
 
 Balloonpop is a simple game where you have to pop balloons before they rise out of the screen.
