@@ -1,7 +1,9 @@
 # Balloonpop
-Author: Tommi Julkunen
-Platform: Android
-IDE: Android Studio
+**Author:** Tommi Julkunen
+
+**Platform:** Android
+
+**IDE:** Android Studio
 
 Balloonpop is a simple game where you have to pop balloons before they rise out of the screen.
 Balloons get faster over time. Missing balloons and popping evil ones reduces health.
