@@ -13,7 +13,7 @@ High scores use the java file io on android internal storage.
 
 Development has been restarted after hiatus.
 
-![Screenshot on emulator](https://raw.github.com/tjulkune/balloonpop/rel/screenshots/demo.jpg)
+Screenshot on emulator: https://raw.github.com/tjulkune/balloonpop/rel/screenshots/demo.jpg
 
 Current APK: https://raw.github.com/tjulkune/balloonpop/blob/rel/apk/bpop-signed.apk
 
