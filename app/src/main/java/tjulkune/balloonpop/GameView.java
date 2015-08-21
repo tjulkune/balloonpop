@@ -14,18 +14,18 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 //game engine
-class GameView extends View implements OnTouchListener
-{   
-    	private Random randGen = new Random();
-    	private Balloon ball;
-    	private Canvas canvas;
-    	private short level = 1;
-    	private int score;
-    	private int popCounter = 1;
-    	private int health = 100;
-    	private Vector <Balloon> balls = new Vector<Balloon>();
-        private long startTime = System.currentTimeMillis();
-        private long curTime;
+class GameView extends View implements OnTouchListener {
+
+	private Random randGen = new Random();
+	private Balloon ball;
+	private Canvas canvas;
+	private short level = 1;
+	private int score;
+	private int popCounter = 1;
+	private int health = 100;
+	private Vector<Balloon> balls = new Vector<Balloon>();
+	private long startTime = System.currentTimeMillis();
+	private long curTime;
 
 	private Paint greenPaint = new Paint();
 	private Paint redPaint = new Paint();
@@ -38,10 +38,10 @@ class GameView extends View implements OnTouchListener
 	//private int darkGreen = Color.rgb(0,92,31);
 
 	public Canvas getCanvas() {
-        	return this.canvas;
-        }
-    	
-        public GameView(Context context)
+		return this.canvas;
+	}
+
+	public GameView(Context context)
         {
             super(context);
             this.canvas = new Canvas();
@@ -61,8 +61,7 @@ class GameView extends View implements OnTouchListener
 			createBalloons(50);
 		}
 
-	public void createBalloons(int amount)
-        {	
+	public void createBalloons(int amount) {
         	for(int i = 0; i < amount; i++)
         	{
 				// set balloon cordinates randomly within the confines of screen
