@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Vector;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,7 +19,6 @@ class GameView extends View implements OnTouchListener
     	private Random randGen = new Random();
     	private Balloon ball;
     	private Canvas canvas;
-    	private Paint paint = new Paint();
     	private short level = 1;
     	private int score;
     	private int popCounter = 1;
@@ -26,10 +26,18 @@ class GameView extends View implements OnTouchListener
     	private Vector <Balloon> balls = new Vector<Balloon>();
         private long startTime = System.currentTimeMillis();
         private long curTime;
-  
-              
-        public Canvas getCanvas()
-        {
+
+	private Paint greenPaint = new Paint();
+	private Paint redPaint = new Paint();
+	private Paint defaultPaint = new Paint();
+
+
+	//paint.setColor(darkGreen);
+	//hudPpaint.setFlags(1); // anti-alias
+	//private Bitmap bgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+	//private int darkGreen = Color.rgb(0,92,31);
+
+	public Canvas getCanvas() {
         	return this.canvas;
         }
     	
@@ -37,23 +45,30 @@ class GameView extends View implements OnTouchListener
         {
             super(context);
             this.canvas = new Canvas();
-            this.setOnTouchListener(this);
-           
-        }
+			// for HUD text
+			greenPaint.setTextSize(30);
+			greenPaint.setColor(Color.GREEN);
+			redPaint.setTextSize(30);
+			redPaint.setColor(Color.RED);
+			this.setOnTouchListener(this);
+
+		}
         
         // get the screen size when layout is created            
         protected void onLayout (boolean changed, int left, int top, int right, int bottom) 
         {
         	super.onLayout(changed, left, top, right, bottom);
-        	createBalloons(100);
-        }
-       
-        public void createBalloons(int amount)
+			createBalloons(50);
+		}
+
+	public void createBalloons(int amount)
         {	
         	for(int i = 0; i < amount; i++)
         	{
-        		if(randGen.nextInt(10)>7) ball = new Balloon(this.getContext(),randGen.nextInt(this.getMeasuredWidth()-40),this.getMeasuredHeight()-50, true,BitmapFactory.decodeResource(getResources(), R.drawable.evilballoon));
-        		else ball = new Balloon(this.getContext(),randGen.nextInt(this.getMeasuredWidth()-40),this.getMeasuredHeight()-50, false,BitmapFactory.decodeResource(getResources(), R.drawable.balloon));
+				// set balloon cordinates randomly within the confines of screen
+				if (randGen.nextInt(10) > 7)
+					ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, true, BitmapFactory.decodeResource(getResources(), R.drawable.evilballoon));
+				else ball = new Balloon(this.getContext(),randGen.nextInt(this.getMeasuredWidth()-40),this.getMeasuredHeight()-50, false,BitmapFactory.decodeResource(getResources(), R.drawable.balloon));
         		balls.add(ball);
         	}
         }
@@ -91,39 +106,40 @@ class GameView extends View implements OnTouchListener
         @Override
         public void onDraw(Canvas canvas) 
         {
-        	canvas.drawColor(Color.BLUE);  
-        	paint.setTextSize(20);
-        	paint.setColor(Color.GREEN);
-        	canvas.drawText("Score: "+score, 0, 20, paint);
-        	paint.setColor(Color.RED);
-        	canvas.drawText("Health: "+health, 0, 42, paint);
-     
+			canvas.drawColor(Color.BLUE);
+			canvas.drawText("Score: " + score, 0, 30, greenPaint);
+			canvas.drawText("Health: " + health, 0, 62, redPaint);
+			int randTime = randGen.nextInt(300) + 50;
+			// System.out.println(randTime);
+
         	// iterate through balloon array
         	for(int k = 0; k < balls.size() && health >= 0; k++)
             {
         		curTime = System.currentTimeMillis() - startTime;
         		balls.get(k).setSpeed(level);
-        		// release more balloons at certain interval
-        		if (curTime % 150 == 0) balls.get(k).makeActive();
-        		// draw and move active balloons 
-        		if (balls.get(k).isActive())
+
+				// release more balloons at random interval
+				if (curTime % randTime == 0) balls.get(k).makeActive();
+				// draw and move active balloons
+				if (balls.get(k).isActive())
         		{
         			balls.get(k).move();
         			// if ball is inactive (has reached upper edge after moving): reduce health
         			if (!balls.get(k).isActive() && !balls.get(k).isEvil())health -= 5;     
         			balls.get(k).draw(canvas);       					
         		}
-        		this.invalidate (); //to cause a rendering loop
+
         	}
-            
+			this.invalidate(); //to cause a rendering loop
+
             // game over condition
             if (health < 0)
             {
-            	paint.setTextSize(50);
-            	paint.setColor(Color.BLACK);
-            	canvas.drawText("Game Over!", 50, 300, paint);
-            	//((GameActivity)getContext()).highScores(this.score);  
-              	((GameActivity)getContext()).startNameview(this.score);  
+				defaultPaint.setTextSize(50);
+				defaultPaint.setColor(Color.BLACK);
+				canvas.drawText("Game Over!", 50, 300, defaultPaint);
+				//((GameActivity)getContext()).highScores(this.score);
+				((GameActivity)getContext()).startNameview(this.score);
             }
         }
     }
