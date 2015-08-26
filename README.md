@@ -13,7 +13,7 @@ High scores use the java file io on android internal storage.
 
 Screenshot on emulator: https://raw.github.com/tjulkune/balloonpop/rel/screenshots/demo.jpg
 
-Current APK: https://raw.github.com/tjulkune/balloonpop/blob/rel/apk/bpop-signed.apk?raw=true
+Current APK: https://github.com/tjulkune/balloonpop/blob/rel/apk/bpop-signed.apk?raw=true
 
 ##TODO
 ~~More uniform balloon spawning~~ **Done**
