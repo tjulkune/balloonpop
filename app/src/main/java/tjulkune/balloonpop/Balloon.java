@@ -7,20 +7,26 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-public class Balloon extends ImageView 
+public class Balloon extends ImageView
 {
 	private Rect ballRect;
 	private boolean evil = false;
 	private boolean active = false;
-	private Bitmap balloonmap;
-	private int speed; 
-			
-	public Balloon(Context context, int left, int top, boolean isEvil, Bitmap bmap) 
-	{
-		super(context);
+    private boolean swayLeft = true;
+    private Bitmap balloonmap;
+    private int speed;
+    private int swayLimit = 0;
+    private int swayCount = 0;
+
+    // constructor punches in our needed values
+    public Balloon(Context context, int left, int top, boolean isEvil, Bitmap bmap, int swayLimit, boolean sway)
+    {
+        super(context);
 		this.ballRect = new Rect (left, top, left+40 ,top+50);
 		this.evil = isEvil;
-		balloonmap = bmap;
+        this.swayLimit = swayLimit;
+        this.swayLeft = sway;
+        balloonmap = bmap;
 	}
 	
 	public int getSpeed()
@@ -32,8 +38,9 @@ public class Balloon extends ImageView
 	{
 		this.speed = newspeed;
 	}
-	
-	public boolean isActive()
+    /* public void setSwayLeft(boolean sway) { this.swayLeft = sway; } */
+
+    public boolean isActive()
 	{
 		return active;
 	}
@@ -85,9 +92,24 @@ public class Balloon extends ImageView
 		if (ballRect.bottom >= 0 && this.active == true)
 		{
 			this.ballRect.top -= this.speed;
-			if (this.ballRect.left % 3 == 0) this.ballRect.left -= 2;
-			else this.ballRect.left += 2;
-			
+
+            //more organic movement by swaying the balloons left and right
+            if (this.swayCount >= this.swayLimit)
+            {
+                this.swayLeft = !swayLeft; // flip direction
+                this.swayCount = 0;
+            }
+            this.swayCount += 1;
+
+            if (swayLeft)
+            {
+                this.ballRect.left -= 1;
+            } else // sway right
+            {
+                this.ballRect.left += 1;
+            }
+
+
 			// to keep aspect ratio
 			this.ballRect.right = this.ballRect.left + 40;
 			this.ballRect.bottom = this.ballRect.top + 50 ;	

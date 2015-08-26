@@ -26,8 +26,8 @@ class GameView extends View implements OnTouchListener
     private int popCounter = 1;
     private int health = 100;
     private Vector<Balloon> balls = new Vector<Balloon>();
-    private long startTime = System.currentTimeMillis();
-    private long curTime;
+    private double startTime = System.currentTimeMillis();
+    private double curTime;
 
     private Paint greenPaint = new Paint();
     private Paint redPaint = new Paint();
@@ -70,11 +70,18 @@ class GameView extends View implements OnTouchListener
     {
         for (int i = 0; i < amount; i++)
         {
+            // maximum value for sway
+            int randomSwayLimit = randGen.nextInt(100) + 1;
+            // sway direction
+            boolean swaySwitch = randGen.nextBoolean();
+
             // set balloon cordinates randomly within the confines of screen
-            if (randGen.nextInt(10) > 7)
-                ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, true, BitmapFactory.decodeResource(getResources(), R.drawable.evilballoon));
+            if (randGen.nextInt(10) > 7) // 2/10 ratio on evil and regular balloons
+                ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, true,
+                        BitmapFactory.decodeResource(getResources(), R.drawable.evilballoon), randomSwayLimit, swaySwitch);
             else
-                ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, false, BitmapFactory.decodeResource(getResources(), R.drawable.balloon));
+                ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, false,
+                        BitmapFactory.decodeResource(getResources(), R.drawable.balloon), randomSwayLimit, swaySwitch);
             balls.add(ball);
         }
     }
@@ -119,16 +126,18 @@ class GameView extends View implements OnTouchListener
         int randTime = randGen.nextInt(300) + 50;
         // System.out.println(randTime);
 
+        int waveSize = 0;
         // iterate through balloon array
         for (int k = 0; k < balls.size() && health >= 0; k++)
         {
             curTime = System.currentTimeMillis() - startTime;
             balls.get(k).setSpeed(level);
 
-            // release more balloons at random interval
-            if (curTime % randTime == 0)
+            // release more balloons at random interval, only release max 10 balls per wave
+            if (curTime % randTime == 0 && waveSize <= 10)
             {
                 balls.get(k).makeActive();
+                waveSize++;
 
             }
             // draw and move active balloons
