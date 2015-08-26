@@ -55,14 +55,21 @@ public class ScoreActivity extends ListActivity
         ArrayList<String> scoreList = new ArrayList<String>();
         Iterator<Entry<Integer, String>> i = highscores.entrySet().iterator();
         int n = 1;
-        while (i.hasNext() && n <= 15) 
+        int playerPos = 0;
+        while (i.hasNext() && n <= 15)
         {
             @SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry) i.next();
-            scoreList.add(n+".  "+entry.getValue().toString()+ " | " +entry.getKey().toString());
+            scoreList.add(n + ".  " + entry.getValue().toString() + " : " + entry.getKey().toString());
+            if (entry.getKey().toString() == playerName)
+            {
+                playerPos = n;
+            }
             n++;
         }
-        this.setListAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, scoreList)); 
+        this.setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, scoreList));
+        this.setSelection(playerPos); //highlight current player's position
+
         setContentView(R.layout.scores);                   
     }
 
@@ -103,10 +110,11 @@ public class ScoreActivity extends ListActivity
     		{	
     			int score = Integer.parseInt(fileScan.next());
   	        	String name = fileScan.next();
-  	        	highscores.put(score,name); 
-  	        	System.out.println(""+name+ ":"+score);
-    		}
-  	        scoreStream.close();
+                name = name.replace("\n", "").replace("\r", ""); //strip garbage
+                highscores.put(score, name);
+                // System.out.println(""+name+ ":"+score); //DEBUG
+            }
+            scoreStream.close();
 		} 
     	catch (IOException ioe) 
 		{
