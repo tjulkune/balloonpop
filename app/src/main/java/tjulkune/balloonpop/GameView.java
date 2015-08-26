@@ -24,7 +24,7 @@ class GameView extends View implements OnTouchListener
     private short level = 1;
     private int score;
     private int popCounter = 1;
-    private int health = 100;
+    private int health = 200;
     private Vector<Balloon> balls = new Vector<Balloon>();
     private double startTime = System.currentTimeMillis();
     private double curTime;
