@@ -7,21 +7,19 @@
 
 Balloonpop is a simple game where you have to pop balloons before they rise out of the screen.
 Balloons get faster over time. Missing balloons and popping evil ones reduces health.
-The game engine is not finetuned but the mechanics work nonetheless.
+The game is best played in vertical orientation.
 Application is split into three activities: main menu, game and high scores.
 High scores use the java file io on android internal storage.
-
-Development has been restarted after hiatus.
 
 Screenshot on emulator: https://raw.github.com/tjulkune/balloonpop/rel/screenshots/demo.jpg
 
 Current APK: https://raw.github.com/tjulkune/balloonpop/blob/rel/apk/bpop-signed.apk
 
 ##TODO
-More uniform balloon spawning
+~~More uniform balloon spawning~~ **Done**
 
-Less CPU impact
+~~Less CPU impact~~ **Done**
 
-GUI and graphics improvements
+~~GUI and graphics improvements~~ **Done**
 
-Possible extra features
+Possible extra features and incremental improvements
