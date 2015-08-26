@@ -78,8 +78,8 @@ public class ScoreActivity extends ListActivity
 	{
 		Iterator<Entry<Integer, String>> i = highscores.entrySet().iterator(); 		
 	    int index = 0;
-		while (i.hasNext() && index <= 15) 
-	    {	
+        while (i.hasNext() && index <= 10)
+        {
 	    	@SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry) i.next();
 	    	try 

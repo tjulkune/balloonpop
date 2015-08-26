@@ -4,9 +4,9 @@ package tjulkune.balloonpop;
 import java.util.Random;
 import java.util.Vector;
 
+
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,15 +29,11 @@ class GameView extends View implements OnTouchListener
     private double startTime = System.currentTimeMillis();
     private double curTime;
 
+    // consider refactoring
     private Paint greenPaint = new Paint();
     private Paint redPaint = new Paint();
     private Paint defaultPaint = new Paint();
-
-
-    //paint.setColor(darkGreen);
-    //paint.setFlags(1); // anti-alias
-    //private Bitmap bgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-    //private int darkGreen = Color.rgb(0,92,31);
+    //private Bitmap bg = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
     public Canvas getCanvas()
     {
@@ -52,9 +48,9 @@ class GameView extends View implements OnTouchListener
         defaultPaint.setTextSize(30);
         defaultPaint.setColor(Color.BLACK);
         greenPaint.setTextSize(30);
-        greenPaint.setColor(Color.GREEN);
+        greenPaint.setColor(Color.rgb(0, 61, 0));
         redPaint.setTextSize(30);
-        redPaint.setColor(Color.RED);
+        redPaint.setColor(Color.rgb(128, 0, 0));
         this.setOnTouchListener(this);
 
     }
@@ -66,6 +62,7 @@ class GameView extends View implements OnTouchListener
         createBalloons(100);
     }
 
+    // construct balloon objects and push them into Vector
     public void createBalloons(int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -75,7 +72,7 @@ class GameView extends View implements OnTouchListener
             // sway direction
             boolean swaySwitch = randGen.nextBoolean();
 
-            // set balloon cordinates randomly within the confines of screen
+            // set balloon co-ordinates randomly within the confines of screen
             if (randGen.nextInt(10) > 7) // 2/10 ratio on evil and regular balloons
                 ball = new Balloon(this.getContext(), randGen.nextInt(this.getMeasuredWidth() - 40), this.getMeasuredHeight() - 50, true,
                         BitmapFactory.decodeResource(getResources(), R.drawable.evilballoon), randomSwayLimit, swaySwitch);
@@ -88,7 +85,7 @@ class GameView extends View implements OnTouchListener
 
     public boolean onTouch(View v, MotionEvent event)
     {
-        //iterate through balloons and let balloon handle the event
+        // iterate through balloons and let balloon handle the event
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
             for (int j = 0; j < balls.size(); j++)
@@ -119,7 +116,8 @@ class GameView extends View implements OnTouchListener
     public void onDraw(Canvas canvas)
     {
         //canvas.drawColor(Color.rgb(102, 204, 255));
-        canvas.drawColor(Color.BLUE);
+        canvas.drawColor(Color.rgb(204, 224, 255));
+
         canvas.drawText("Score: " + score, 0, 30, greenPaint);
         canvas.drawText("Health: " + health, 0, 62, redPaint);
         canvas.drawText("Level: " + level, 0, 92, defaultPaint);
@@ -127,7 +125,7 @@ class GameView extends View implements OnTouchListener
         // System.out.println(randTime);
 
         int waveSize = 0;
-        // iterate through balloon array
+        // iterate through balloon vector
         for (int k = 0; k < balls.size() && health >= 0; k++)
         {
             curTime = System.currentTimeMillis() - startTime;
